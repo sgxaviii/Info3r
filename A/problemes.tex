@@ -1,0 +1,125 @@
+\documentclass[a4paper,12pt]{article}
+
+% Paquetes necesarios
+\usepackage[utf8]{inputenc}   % Codificación de caracteres UTF-8
+\usepackage[catalan]{babel}    % Idioma catala
+\usepackage{geometry}         % Configuración de márgenes
+\geometry{left=3cm,right=2.5cm,top=2.5cm,bottom=3cm}
+\usepackage{fancyhdr}         % Cabeceras y pies de página personalizados
+\usepackage{parskip}          % Evita indentación en los párrafos
+\usepackage{graphicx}
+\usepackage{minted}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{enumitem}
+
+\usepackage{booktabs}
+\usepackage{todonotes}
+
+\DeclareRobustCommand{\bigO}{%
+  \text{\usefont{OMS}{cmsy}{m}{n}O}%
+}
+
+% Personalización de cabeceras
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Problemes algorísimia}
+\fancyhead[R]{Grup G11.2}
+
+\fancyfoot[C]{\thepage}
+
+% Configuración de título
+\title{Problemes algorísimia}
+\author{Miquel Pere Baztán Grau
+    \\ Bernat Dosrius Lleonart
+    \\ Xavier Momplet Gil
+    \\ Emma Ventura Font 
+    \\ \\   Universitat Politècnica de Catalunya}
+\date{21 de desembre 2024}
+
+\begin{document}
+
+\maketitle
+
+\section*{Setmana 2 (20 febrer)}
+
+\subsection*{Problema 1.3 (celebritat?)}
+En una festa, un convidat es diu que és una celebritat si tothom el coneix, però ell no coneix a ningú (tret d'ell mateix). Les relacions de coneixença donen lloc a un graf dirigit: cada convidat és un vèrtex, i hi ha un arc entre $u$ i $v$ si $u$ coneix a $v$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Doneu una formalització de la propietat de ser celebritat.
+    \item Doneu un algorisme que, donat un graf dirigit representat amb una matriu d'adjacència, indica si hi ha o no cap celebritat. En el cas que hi sigui, cal dir qui és. El vostre algorisme ha de funcionar en temps $\bigO(n)$, on $n$ és el nombre de vèrtexs.
+\end{enumerate}
+
+\subsection*{Problema 1.9 (és fortament connex?)}
+Un graf dirigit és fortament connex quan, per cada parell de vèrtexs $u$, $v$, hi ha un camí de $u$ a $v$. Doneu un algorisme per determinar si un graf dirigit és fortament connex.
+
+\subsection*{Problema 1.10 (és semiconnex?)}
+Un graf dirigit $G = (V, E)$ és semiconnex si, per qualsevol parell de vèrtexs $u, v \in V$, tenim un camí dirigit de $u$ a $v$ o de $v$ a $u$.
+Doneu un algorisme eficient per determinar si un graf dirigit $G$ és semiconnex. Demostreu la correctesa del vostre algorisme i analitzeu-ne el cost. Dissenyeu el vostre algorisme fent us d'un algorisme que us proporcioni les components connexes fortes del graf en temps $\bigO(n + m)$.
+
+\subsection*{Problema 1.12 (clique max?)}
+
+
+
+\todo[inline]{Assignació setmana 2 (20 febrer):
+1.3, 1.9, 1.10, 1.12
+Extra 1: Definiu formalment la propietat connex(G) que descriu si un graf G=(V,E) és connex.
+Extra 2: Definiu formalment la propietat clique(G) que descriu si un graf G=(V,E) és complet.
+Extra 3: Sigui B(n) el nombre de fulles en un arbre binari complet amb n nodes. Demostreu mitjançant inducció que: B(n)= n+1 / 2, per tot n ≥1.
+(per a tots els grups)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+$$$$
+
+\vfill
+
+\begin{center}
+    \rule{0.8\textwidth}{0.5pt} % Línia separadora subtil
+
+    \vspace{.5cm}
+    
+    % Dibuix abstracte amb corbes i arcs
+    \begin{tikzpicture}
+        % Curva principal amb un gradient subtil
+        \draw[thick, color=blue!60!white] plot [smooth cycle, tension=1] coordinates {(0,0) (2,0.5) (3,-0.2) (4,0.6) (6,0)};
+        
+        % Segona corba més subtil
+        \draw[thick, color=blue!30!white] plot [smooth, tension=1] coordinates {(0.5,-0.5) (2,0.2) (3,-0.3) (5,0.4) (6.5,0)};
+        
+        % Tercera corba lleugerament separada
+        \draw[thick, color=blue!10!white] plot [smooth, tension=1] coordinates {(1,-1) (2.5,0.1) (3,-0.5) (5.5,0.3) (7,0)};
+        
+        % Petits cercles decoratius al final de les corbes
+
+    \end{tikzpicture}
+
+    \textbf{Miquel Pere Baztán Grau\\ Bernat Dosrius Lleonart
+    \\ Xavier Momplet Gil
+    \\ Emma Ventura Font} \\% Nom de l'estudiant
+    \vspace{0.2cm}
+    Universitat Politècnica de Catalunya \\ % Nom de la institució
+    \vspace{0.5cm}
+    \rule{0.4\textwidth}{0.4pt} % Línia final subtil
+\end{center}
+
+\vfill
+
+\end{document}
