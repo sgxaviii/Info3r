@@ -67,7 +67,7 @@
 
 \subsection*{Problema 1.9 (és fortament connex?)}
 \textbf{Un graf dirigit és fortament connex quan, per cada parell de vèrtexs $u$, $v$, hi ha un camí de $u$ a $v$. Doneu un algorisme per determinar si un graf dirigit és fortament connex.} \\ \\
-Sigui $~$ una relació d'equivalència  
+Sigui $R$ una relació d'equivalència  
 
 
 
@@ -75,7 +75,29 @@ Sigui $~$ una relació d'equivalència
 Un graf dirigit $G = (V, E)$ és semiconnex si, per qualsevol parell de vèrtexs $u, v \in V$, tenim un camí dirigit de $u$ a $v$ o de $v$ a $u$.
 Doneu un algorisme eficient per determinar si un graf dirigit $G$ és semiconnex. Demostreu la correctesa del vostre algorisme i analitzeu-ne el cost. Dissenyeu el vostre algorisme fent us d'un algorisme que us proporcioni les components connexes fortes del graf en temps $\bigO(n + m)$.
 
+\newpage
 \subsection*{Problema 1.12 (clique max?)}
+Donat un graf no dirigit $G = (V, E)$ i un subconjunt de vèrtex V1, el subgraf
+induït per $V1$, $G[V1]$ té com a vèrtex $V1$ i con a arestes totes les arestes a $E$ que connecten
+vèrtexs en $V1$. Un clique és un subgraf indiut per un conjunt $C$ on tots els vèrtexs estan
+connectats entre ells.
+Considereu el següent algorisme de dividir-i-vèncer per al problema de trobar un clique en un
+graf no dirigit $G = (V, A)$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{ksnip_20250219-180045.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+Contesteu les següents preguntes:
+\begin{enumerate}[label=(\alph*)]
+    \item Demostreu que l’algorisme CliqueDV sempre retorna un subgraf de G que és un clique.
+    \item Doneu una expressió asimptòtica del nombre de passos de l’algorisme CliqueDV.
+    \item Doneu un exemple d’un graf G on l’algorisme CliqueDV retorna un clique que no és de
+grandària màxima.
+    \item Creieu que és fàcil modificar CliqueDV de manera que sempre done el clique màxim,
+sense incrementar el temps pitjor de l’algorisme? Expliqueu la vostra resposta
+\end{enumerate}
 
 
 
@@ -137,4 +159,3 @@ $$$$
 \vfill
 
 \end{document}
-
