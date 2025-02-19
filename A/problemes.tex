@@ -183,16 +183,25 @@ Extra 3: Sigui B(n) el nombre de fulles en un arbre binari complet amb n nodes. 
 (per a tots els grups)}
 
 
+\subsection*{Extra 1}
+Donat un graf $G = (V,E)$ direm que aquest graf és connex:
+$$G \textit{ és connex} \Longleftrightarrow \forall u, v \in V \ | \ v \neq u \ \exists \ C(u,v)$$
+On $C(u,v)$ és un camí entre $u$ i $v$ que definirem de la següent forma:
+$$C(u,v) = \{u_0, u_1, \ ... \ , u_n \in V \ | \ u_0 = u, \ u_n = v, (u_i, u_{i+1}) \in E \ \ \forall i \in [n-1]\}$$
 
+\subsection*{Extra 2}
+Donat un graf $G = (V,E)$ direm que aquest graf és complet:
+$$G \textit{ és complet} \Longleftrightarrow \forall v, u \in V \ | \ u \neq v \ (v, u) \in E \ $$
 
-
-
-
-
-
-
-
-
+\subsection*{Extra 3}
+Volem veure que tot arbre binari complet amb $n$ nodes té un total de $\frac{n+1}{2}$ fulles, entenent com a fulles aquells nodes que no són pares de cap altre node. Notem que només existeixen arbres binaris complets amb $n$ senar ($n = 1 + 2*pares$). Ho veurem per inducció:
+\subsubsection*{Cas base ($n = 1$):}
+En aquest cas només tenim $n=1$ nodes, i per tant, només tenim $\frac{n+1}{2} = 1$ fulles, per tant, en el cas base es verifica la propietat que volem demostrar.
+\subsubsection*{Pas inductiu:}
+Suposem que tenim un arbre binari complet amb $n-1$ nodes i suposem que la propietat que volem demostrar és certa, aleshores tenim un total de $\frac{n}{2}$ fulles. Ara, per a construir un arbre binari complet de $n + 1$ nodes hem d'afegir dos fills a qualsevol d'aquestes fulles (el cas d'un arbre amb $n$ nodes no té sentit ja que només existeixen els arbres binaris complets amb $n$ nodes si $n$ és imparell, per tant si $n-1$ és imparell, el següent arbre binari complet tindrà $n+1$ nodes). Aleshores, la fulla que escollim deixa de ser-ho i passem a tenir dues noves fulles (els fills d'aquesta fulla). D'aquesta forma el còmput global de fulles queda:
+$$\frac{n}{2} - 1 + 2 = \frac{n}{2} + 1 = \frac{(n+1)+1}{2}$$
+Per tant hem vist que:
+$$\forall B_n \textit{ arbre binari complet amb n nodes $\left(n \equiv 1 \ (mod 2)\right)$} \Longrightarrow \# Fulles(B_n) = \frac{n+1}{2}$$
 
 
 \newpage
