@@ -19,6 +19,10 @@
 \usepackage{booktabs}
 \usepackage{todonotes}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
 \DeclareRobustCommand{\bigO}{%
   \text{\usefont{OMS}{cmsy}{m}{n}O}%
 }
@@ -66,14 +70,84 @@
     \end{enumerate}
 
 \subsection*{Problema 1.9 (és fortament connex?)}
-\textbf{Un graf dirigit és fortament connex quan, per cada parell de vèrtexs $u$, $v$, hi ha un camí de $u$ a $v$. Doneu un algorisme per determinar si un graf dirigit és fortament connex.} \\ \\
-Sigui $R$ una relació d'equivalència  
+\textbf{Un graf dirigit és fortament connex quan, per cada parell de vèrtexs $u$, $v$, hi ha un camí de $u$ a $v$. Doneu un algorisme per determinar si un graf dirigit és fortament connex.}
 
+La idea de l'algorisme és fer un DFS (arrelant l'arbre del recorregut en un node $v\in G$ qualsevol) i adonar-nos de que un graf dirigit serà fortament connex si i només sí, és semiconnex i quan ordenem els vèrtexos (segons l'ordre de visita \textit{ndfs}[$v$], $v \in G$), passa el següent:
 
+$ \forall u \in G$ tal que $u \neq v$ (l'arrel) el número més baix que es pot arribar seguint un camí des de $u$ fins a algun dels seus descendents en l'arbre de recorregut del DFS (pujant amb una aresta de retrocès), anomenem-lo \textit{mesAlt}[$u$], és més petit estricte que \textit{ndfs}[$u$]. És a dir, que tot vèrtex (excepte l'arrel) es pot "escapar" (o tornar) del seu pare i anar més amunt de l'arbre. Matemàticament, $\textit{mesAlt}[$u$] < \textit{ndfs}[$u$]$.
+
+Amb un dibuix,
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{graph.png}
+    \caption{Exemple d'arbre fortament connex (les arestes discontínues són les arestes de retrocès)}
+    \label{fig:G}
+\end{figure}
+
+L'algorisme és el següent:
+
+\begin{algorithm}[H]
+    \caption{DFS(G)}
+    \begin{algorithmic}[1]  % El [1] numera las líneas
+        \Require G graf
+        \Ensure G és fortament connex?
+        \For {v $\in$ V(G)}
+            \State visitat[v] := false
+            \State ndfs[v] := 0
+        \EndFor
+        \State
+        \State numDfs := 0
+        \State esFortamentConnex := true
+        \State
+        \State v:= un vèrtex qualsevol de G
+
+        \State FortConnRec(G, v, v, esFortamentConnex, ndfs, visitat)
+        \State
+        \If{not esFortamentConnex}
+           \State \Return false
+        \EndIf
+        \State
+        
+        \For{v $\in$ V(G)}
+            \If{not visitat[v]}
+                \State \Return false
+            \EndIf
+        \EndFor
+        \State
+        \State \Return esFortamentConnex
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+    \caption{FortConnRec(G, v, pare, esFortamentConnex, ndfs, visistat)}
+    \begin{algorithmic}[1]  % El [1] numera las líneas
+        \Require G graf
+        \State numDfs := numDfs + 1; ndfs[v] := numDfs
+        \State visistat[v] := true
+        \State mesAlt[v] = ndfs[v]
+
+        \State
+        
+        \For {w $\in$ G.ADJACENT(v)}
+            \If{not visitat[w]}
+                \State FortConnRec(G, w, v, esFortamentConnex, ndfs, visitat)
+                \State mesAlt[v] := min(mesAlt[v], mesAlt[w])
+            \Else
+                \State mesAlt[v] := min(mesAlt[v], ndfs[w])
+            \EndIf
+        \EndFor
+        \State
+        \If{pare != v}
+            \State  esFortamentConnex := esFortamentConnex or mesAlt[v] $\geq$ ndfs[v]
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
+
+\underline{Nota}: Per calcular mesAlt[v] usem el mesAlt[w] dels fills directes que no hem visitat (arestes contínues de l'arbre de la figura) i el ndfs[w] dels nodes que ja hem visitat (arestes discontínues) i prenem el mínim de tots ells.
 
 \subsection*{Problema 1.10 (és semiconnex?)}
-Un graf dirigit $G = (V, E)$ és semiconnex si, per qualsevol parell de vèrtexs $u, v \in V$, tenim un camí dirigit de $u$ a $v$ o de $v$ a $u$.
-Doneu un algorisme eficient per determinar si un graf dirigit $G$ és semiconnex. Demostreu la correctesa del vostre algorisme i analitzeu-ne el cost. Dissenyeu el vostre algorisme fent us d'un algorisme que us proporcioni les components connexes fortes del graf en temps $\bigO(n + m)$.
+\textbf{Un graf dirigit $G = (V, E)$ és semiconnex si, per qualsevol parell de vèrtexs $u, v \in V$, tenim un camí dirigit de $u$ a $v$ o de $v$ a $u$.
+Doneu un algorisme eficient per determinar si un graf dirigit $G$ és semiconnex. Demostreu la correctesa del vostre algorisme i analitzeu-ne el cost. Dissenyeu el vostre algorisme fent us d'un algorisme que us proporcioni les components connexes fortes del graf en temps $\bigO(n + m)$.}
 
 \newpage
 \subsection*{Problema 1.12 (clique max?)}
