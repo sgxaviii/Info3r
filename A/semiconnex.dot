@@ -1,0 +1,38 @@
+// Per compilar dot -Tpng <nomfitxer.dot> nomfitxer.png
+
+digraph G {
+    node [shape=circle, style=filled, fillcolor=lightblue, fontsize=20, fontcolor=black]
+
+    rankdir = TB;
+    ordering = out;
+    nodesep=0.5;
+
+    //ranksep=1.0;  // Separación mínima vertical entre niveles
+
+    1 [fillcolor=red]
+
+    {rank=same; 1}
+    {rank=same; 2,6,8}
+    {rank=same; 3,4,7,9}
+    {rank=same; 10,11}
+
+
+
+    1 -> 2;
+    2 -> 3;
+    2 -> 4;
+    4 -> 5;
+    5 -> 3 [style=dashed];
+
+    1 -> 6;
+    6 -> 7;
+    7 -> 2 [style=dashed];
+
+    1 -> 8;
+    8 -> 9;
+    9 -> 10;
+    9 -> 11;
+
+    11 -> 10 [style=dashed];
+    10 -> 6 [style=dashed]; 
+}

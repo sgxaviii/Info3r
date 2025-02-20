@@ -22,6 +22,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+\usepackage{ amssymb }
 
 \DeclareRobustCommand{\bigO}{%
   \text{\usefont{OMS}{cmsy}{m}{n}O}%
@@ -149,6 +150,103 @@ L'algorisme és el següent:
 \textbf{Un graf dirigit $G = (V, E)$ és semiconnex si, per qualsevol parell de vèrtexs $u, v \in V$, tenim un camí dirigit de $u$ a $v$ o de $v$ a $u$.
 Doneu un algorisme eficient per determinar si un graf dirigit $G$ és semiconnex. Demostreu la correctesa del vostre algorisme i analitzeu-ne el cost. Dissenyeu el vostre algorisme fent us d'un algorisme que us proporcioni les components connexes fortes del graf en temps $\bigO(n + m)$.}
 
+Sigui $G = (V,E)$ un graf dirigit. Direm que $G$ és semiconnex $\Longleftrightarrow \forall u,v \in V, \ \exists  C(u,v)$, on $C(u,v)$ és un camí entre $u$ i $v$ que definirem de la següent forma:
+$$C(u,v) = \{u_0, u_1, \ ... \ , u_n \in V \ | \ u_0 = u, \ u_n = v, (u_i, u_{i+1}) \in E \ \ \forall i = 0, \dots, n-1 \}$$
+
+Sigui $\sim \ \subseteq V\times V$, la relació d'equivalència tal que $\forall u,v \in V, u \sim v \Longleftrightarrow \exists C(u,v)$ i $\exists C(v,u)$, és a dir, $u \sim v$ si i només si, pertanyen a la mateixa component fortament connexa.
+
+Sigui $[v]$, la classe d'equivalència de $v$, és a dir, $[v] := \{u\in V \ | \ u \sim v \}$. D'aquesta manera podem definir el conjunt cocient $V_c := V/\sim \ = \{[u] \ | \ u \in V \}$ com el conjunt de totes les classes i $E_c = \{([u],[v]) : [u] \neq[v] $ i $ \exists u'\in[u],v'\in[v]$ tal que $(u',v') \in E \}$ com les arestes entre vèrtexos de $V_c$.
+
+D'aquesta manera $G_c = (V_c, E_c)$ és el graf de components connexes i el problema es redueix a determinar si $G_c$, el qual és acíclic és semiconnex (si fos cíclic, existirien $u,v \in V_c$ tals que estarien en la mateixa classe d'equivalència !!! ).
+
+La idea de l'algorisme es basa en fer un DFS (arrelant l'arbre del recorregut en un node $v \in V_c$ qualsevol) i adonar-nos de que un graf dirigit acíclic serà semiconnex si i només si $\forall u\in V_c \ , \exists C(u,v)$ o bé $ \exists C(v,u)$. Notem que, com és acíclic, si existeix $C(u,v)$ no pot existir $C(v,u)$.
+
+Per tant, això motiva fer un DFS pel fet que d'aquesta manera determinarem tots els camins de l'arrel $v$ a un altre node i posteriorment, amb el mateix DFS, determinarem els camins de la resta de nodes (no visitats) amb $v$.
+
+\underline{Nota}: Donat un arbre de recorregut, podem determinar si és semiconnex pels següents motius:
+\begin{itemize}
+    \item Si tot node només té un fill, segur que és semiconnex
+    \item Si hi ha algun node que té més d'un fill, aleshores serà semiconnex si i només si per cada ramificació $i+1$ d'aquell node, la primera fulla apunta al primer fill del node de la ramificació $i$ per tota $i$. 
+\end{itemize}
+
+\underline{Justificació}: La justificació es basa en el fet de que si no passés, aleshores no existiria cap camí entre un node de la ramificació $i+1$ amb un de la ramificació $i$ (el primer fill) (!!!)
+
+Amb un exemple:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{semiconnex.png}
+    \caption{Exemple d'arbre semiconnex (les arestes discontínues són les arestes explicades al segon punt)}
+    \label{fig:G}
+\end{figure}
+
+Per altra banda, si tenim dos arbres semiconnexos, la 'unió' ho serà si i només si, la primera fulla visitada pel segon arbre té una aresta cap el node pare del primer arbre.
+
+\underline{Demostració}: Suposarem que no i arribarem a contradicció.
+Suposem que no passa això, però que existeix un camí entre la primera fulla visitada pel segona arbre i l'arrel (al revés no pot passar perquè estaria en el primer DFS). 
+
+Això vol dir que $\exists v_1,...,v_n$ tal que $v_1$= "node fulla del segon arbre",  $v_n$ = "arrel del primer arbre", i tal que $v_i \rightsquigarrow v_{i+1} \ \forall i$. Per la definició de fulla, aquesta no té cap aresta dirigida cap a algun node no visitat. Per tant les úniques arestes que pot tenir són cap a nodes visitats. Com els únics nodes visitats són els del primer arbre del DFS i cap node de tal arbre té cap aresta cap a l'arrel del mateix (altrament es produiria un cicle), deduïm que l'únic camí entre la fulla i el pare ha de ser l'aresta directa (!!!).
+
+Amb això podem definir l'algorisme formalment:
+
+\newpage
+
+\begin{algorithm}[H]
+    \caption{DFS(G)}
+    \begin{algorithmic}[1]  % El [1] numera las líneas
+        \Require G graf acíclic
+        \Ensure G és semiconnex?
+        \For {v $\in$ V(G)}
+            \State visitat[v] := false
+            \State ndfs[v] := 0
+        \EndFor
+        \State
+        \State numDfs := 0
+        \State esSemiConnex := true
+        \State superPare := -1
+        \State
+        \For{$v \in G$ and esSemiConnex}
+            \If{not visitat[v]}
+                \State SemiConnRec(G, v, v, superPare, esSemiConnex, ndfs, visitat)
+                \State superPare := v
+            \EndIf
+        \EndFor
+
+        \State \Return esSemiConnex
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+    \caption{SemiConnRec(G, v, pare, superPare, esSemiConnex, ndfs, visistat)}
+    \begin{algorithmic}[1]  % El [1] numera las líneas
+        \Require G graf acíclic
+        \State numDfs := numDfs + 1; ndfs[v] := numDfs
+        \State visistat[v] := true
+
+        \State esFulla := true
+        \State teAresta := false
+
+        \State
+        
+        \For {w $\in$ G.ADJACENT(v)}
+            \If{not visitat[w]}
+                \State esFulla := false
+                \State SemiConneRec(G, w, v, superPare, esSemiConnex, ndfs, visitat)
+                \State superPare := w
+            \Else
+                \State teAresta = teAresta or (w == superPare)
+            \EndIf
+        \EndFor
+
+
+        \If{esFulla and superPare != -1}
+            \State  esSemiConnex := esSemiConnex and teAresta
+        \EndIf
+
+    \end{algorithmic}
+\end{algorithm}
+
+
 \newpage
 \subsection*{Problema 1.12 (clique max?)}
 Donat un graf no dirigit $G = (V, E)$ i un subconjunt de vèrtex V1, el subgraf
@@ -182,7 +280,7 @@ graf no dirigit $G = (V, A)$.
     Notem que l'algorisme compleix la recurrència $T(n) = 2T(n/2) + \Theta(n^2)$, ja que es fan dues
     crides recursives al mateix algorisme amb mides $n/2$ i els bucles tenen ordre $n^2$, ja que
     es fa un bucle d'ordre n i el \textit{if} també és d'ordre n . Resolent la recurrència amb el teorema
-    master veiem que $T(n) = \Theta(n^2). \\
+    master veiem que $T(n) = \Theta(n^2)$. \\
 
     \item \textbf{Doneu un exemple d'un graf G on l'algorisme CliqueDV retorna un clique que no és de
     grandària màxima.} \\
@@ -190,7 +288,7 @@ graf no dirigit $G = (V, A)$.
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.3\linewidth]{clique.png}
+        \includegraphics[width=0.2\linewidth]{clique.png}
         \caption{Exemple de graf on l'algorisme no retorna una clique màxima}
         \label{fig:clique}
     \end{figure}
@@ -198,18 +296,14 @@ graf no dirigit $G = (V, A)$.
 
 
     \item \textbf{Creieu que és fàcil modificar CliqueDV de manera que sempre done el clique màxim,
-    sense incrementar el temps pitjor de l'algorisme? Expliqueu la vostra resposta}
-\end{enumerate}
+    sense incrementar el temps pitjor de l'algorisme? Expliqueu la vostra resposta} \\
+    Notem que el problema de clique màxima és un problema NP-complet. Per tant, si es pogués P = NP i hauríem resolt el problema del mileni.
 
+    Per altra banda, si suposem que sí que es pot modificar, fent hipòtesi d'inducció \textit{CliqueDV} retornaria la clique màxima de la primera meitat dels nodes i de la segona (tal com es veu en la línia 5 del codi). No obstant, la clique màxima no depèn de les cliques màximes de la meitat de nodes, ja que el fet de ser clique màxima és global.
+    
+    \end{enumerate}
 
-
-\todo[inline]{Assignació setmana 2 (20 febrer):
-1.3, 1.9, 1.10, 1.12
-Extra 1: Definiu formalment la propietat connex(G) que descriu si un graf G=(V,E) és connex.
-Extra 2: Definiu formalment la propietat clique(G) que descriu si un graf G=(V,E) és complet.
-Extra 3: Sigui B(n) el nombre de fulles en un arbre binari complet amb n nodes. Demostreu mitjançant inducció que: B(n)= n+1 / 2, per tot n ≥1.
-(per a tots els grups)}
-
+\newpage
 
 \subsection*{Extra 1}
 Donat un graf $G = (V,E)$ direm que aquest graf és connex:
