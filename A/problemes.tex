@@ -72,7 +72,7 @@
 \subsection*{Problema 1.9 (és fortament connex?)}
 \textbf{Un graf dirigit és fortament connex quan, per cada parell de vèrtexs $u$, $v$, hi ha un camí de $u$ a $v$. Doneu un algorisme per determinar si un graf dirigit és fortament connex.}
 
-La idea de l'algorisme és fer un DFS (arrelant l'arbre del recorregut en un node $v\in G$ qualsevol) i adonar-nos de que un graf dirigit serà fortament connex si i només sí, és semiconnex i quan ordenem els vèrtexos (segons l'ordre de visita \textit{ndfs}[$v$], $v \in G$), passa el següent:
+La idea de l'algorisme és fer un DFS (arrelant l'arbre del recorregut en un node $v\in G$ qualsevol) i adonar-nos de que un graf dirigit serà fortament connex si i només sí, és connex respecte $v$ (es poden visitar tots els nodes del graf des de $v$) i quan ordenem els vèrtexos (segons l'ordre de visita \textit{ndfs}[$u$], $u \in G$), passa el següent:
 
 $ \forall u \in G$ tal que $u \neq v$ (l'arrel) el número més baix que es pot arribar seguint un camí des de $u$ fins a algun dels seus descendents en l'arbre de recorregut del DFS (pujant amb una aresta de retrocès), anomenem-lo \textit{mesAlt}[$u$], és més petit estricte que \textit{ndfs}[$u$]. És a dir, que tot vèrtex (excepte l'arrel) es pot "escapar" (o tornar) del seu pare i anar més amunt de l'arbre. Matemàticament, $\textit{mesAlt}[$u$] < \textit{ndfs}[$u$]$.
 
@@ -124,7 +124,7 @@ L'algorisme és el següent:
         \Require G graf
         \State numDfs := numDfs + 1; ndfs[v] := numDfs
         \State visistat[v] := true
-        \State mesAlt[v] = ndfs[v]
+        \State mesAlt[v] := ndfs[v]
 
         \State
         
