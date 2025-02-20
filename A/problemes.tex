@@ -207,17 +207,19 @@ Amb això podem definir l'algorisme formalment:
         \State
         \For{$v \in G$ and esSemiConnex}
             \If{not visitat[v]}
-                \State SemiConnRec(G, v, v, superPare, esSemiConnex, ndfs, visitat)
+                \State SemiConnRec(G, v, superPare, esSemiConnex, ndfs, visitat)
                 \State superPare := v
             \EndIf
         \EndFor
+
+        \State
 
         \State \Return esSemiConnex
     \end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}[H]
-    \caption{SemiConnRec(G, v, pare, superPare, esSemiConnex, ndfs, visistat)}
+    \caption{SemiConnRec(G, v, superPare, esSemiConnex, ndfs, visistat)}
     \begin{algorithmic}[1]  % El [1] numera las líneas
         \Require G graf acíclic
         \State numDfs := numDfs + 1; ndfs[v] := numDfs
@@ -231,13 +233,14 @@ Amb això podem definir l'algorisme formalment:
         \For {w $\in$ G.ADJACENT(v)}
             \If{not visitat[w]}
                 \State esFulla := false
-                \State SemiConneRec(G, w, v, superPare, esSemiConnex, ndfs, visitat)
+                \State SemiConneRec(G, w, superPare, esSemiConnex, ndfs, visitat)
                 \State superPare := w
             \Else
                 \State teAresta = teAresta or (w == superPare)
             \EndIf
         \EndFor
-
+        
+        \State
 
         \If{esFulla and superPare != -1}
             \State  esSemiConnex := esSemiConnex and teAresta
