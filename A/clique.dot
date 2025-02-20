@@ -1,0 +1,11 @@
+// Per compilar dot -Tpng <nomfitxer.dot> nomfitxer.png
+
+graph G {
+    node [shape=circle, style=filled, fillcolor=lightblue, fontsize=20, fontcolor=black]
+
+
+    1 -- 2;
+    1 -- 4;
+    2 -- 4;
+    2 -- 3;
+}

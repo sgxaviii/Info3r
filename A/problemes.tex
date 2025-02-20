@@ -163,14 +163,42 @@ graf no dirigit $G = (V, A)$.
     \caption{Enter Caption}
     \label{fig:enter-label}
 \end{figure}
-Contesteu les següents preguntes:
+\textbf{Contesteu les següents preguntes:}
 \begin{enumerate}[label=(\alph*)]
-    \item Demostreu que l’algorisme CliqueDV sempre retorna un subgraf de G que és un clique.
-    \item Doneu una expressió asimptòtica del nombre de passos de l’algorisme CliqueDV.
-    \item Doneu un exemple d’un graf G on l’algorisme CliqueDV retorna un clique que no és de
-grandària màxima.
-    \item Creieu que és fàcil modificar CliqueDV de manera que sempre done el clique màxim,
-sense incrementar el temps pitjor de l’algorisme? Expliqueu la vostra resposta
+    \item \textbf{Demostreu que l'algorisme CliqueDV sempre retorna un subgraf de G que és un clique. \\}
+    \underline{Cas base ($n = 1$)}: \\
+    Clarament, si $n = 1$, \textit{CliqueDV(G)} retorna V que és una clique.
+    \\\underline{Pas inductiu}: \\
+    Suposem que \textit{CliqueDV(G)} retorna una clique amb $k<n$ vèrtexos. Vegem que retorna una clique amb $n$ vèrtexos. Notem que $C_1$ i $C_2$ 
+    són cliques per hipòtesi, ja que el nombre de vèrtexos de $G_1$ i $G_2$ és $\frac{n}{2}$.
+    Per altra banda, si fem $C_1^+ = C_1$ i $C_2^+ = C_2$, en els bucles, mirem si hi ha algun vèrtex de $C_1$ que estigui connectat a tots els vèrtexos
+    de $C_2^+$ i en tal cas l'afegim, cosa que conserva el fet de que $C_2^+$ sigui una clique (idem per $C_1^+$). Finalment, es retorna el 
+    $Ci^+$ que tingui grau més gran i per tant, que és una clique, ja que totes les operacions que hem fet conserven el fet de que ho siguin. \\
+
+    Per tant hem demostrat que \textit{CliqueDV(G)} retorna una clique de G.
+
+
+    \item \textbf{Doneu una expressió asimptòtica del nombre de passos de l’algorisme CliqueDV.} \\
+    Notem que l'algorisme compleix la recurrència $T(n) = 2T(n/2) + \Theta(n^2)$, ja que es fan dues
+    crides recursives al mateix algorisme amb mides $n/2$ i els bucles tenen ordre $n^2$, ja que
+    es fa un bucle d'ordre n i el \textit{if} també és d'ordre n . Resolent la recurrència amb el teorema
+    master veiem que $T(n) = \Theta(n^2). \\
+
+    \item \textbf{Doneu un exemple d'un graf G on l'algorisme CliqueDV retorna un clique que no és de
+    grandària màxima.} \\
+    Un exemple de graf on l'algorisme no retorna una clique de grandària màxima és el següent: \\
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\linewidth]{clique.png}
+        \caption{Exemple de graf on l'algorisme no retorna una clique màxima}
+        \label{fig:clique}
+    \end{figure}
+
+
+
+    \item \textbf{Creieu que és fàcil modificar CliqueDV de manera que sempre done el clique màxim,
+    sense incrementar el temps pitjor de l'algorisme? Expliqueu la vostra resposta}
 \end{enumerate}
 
 
